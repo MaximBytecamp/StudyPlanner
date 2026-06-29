@@ -36,3 +36,10 @@ class JsonTaskRepository:
 
         return tasks 
 
+
+    def save(self, tasks: list[Task]) -> None:
+        data = [task.to_dict() for task in tasks]
+
+        with self.file_path.open("w", encoding="utf-8") as file:
+            json.dump(data, file, ensure_ascii=False, indent=2)
+
