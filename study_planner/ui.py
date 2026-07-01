@@ -125,8 +125,24 @@ class StudyPlannerApp:
 
         for visible_position, (task_index, task) in enumerate(self.service.get_tasks(self.filter_var.get())):
             self.visible_indexes.append(task_index)
-            self.listbox.insert(tk.END, task)
+            self.listbox.insert(tk.END, task.display_text())
+            self._paint_task(visible_position, task.priority, task.done)
 
 
-            
+
+    def _paint_task(self, visible_position: int, priority: str, done: bool) -> None:
+        if done:
+            self.listbox.itemconfig(visible_position, foreground="#777777")
+            return 
+
+        colors = {
+            "Низкий": "#1f7a3f",
+            "Средний": "#9f6500",
+            "Высокий": "#b42318"
+        }
+
+        self.listbox.itemconfig(visible_position, foreground=colors.get(priority, "#000000"))
+
+
+
 

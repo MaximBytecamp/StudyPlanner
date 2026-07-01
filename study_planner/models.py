@@ -43,6 +43,10 @@ class Task:
         if not isinstance(self.deadline, date):
             raise ValueError("Введите дедлайн в формате ДД.ММ.ГГГГ")
 
+    def display_text(self) -> str:
+        status = "+" if self.done else " "
+        return f"[{status}] {self.title} | {format_deadline(self.deadline)} | {self.priority}"
+
 
 def parse_deadline(value: str | date) -> date:
     if isinstance(value, date):

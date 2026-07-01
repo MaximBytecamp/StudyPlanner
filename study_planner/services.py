@@ -36,4 +36,7 @@ class TaskService:
 
         return list(enumerate(self.tasks))
 
-        
+
+    def statistics(self) -> tuple[int, int]:
+        done_count = sum(task.done for task in self.tasks)
+        return len(self.tasks), done_count
