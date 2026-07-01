@@ -113,6 +113,7 @@ class StudyPlannerApp:
             return 
 
         self._clear_form()
+        self._refresh_tasks()
 
 
     def _save_tasks(self) -> None: 
@@ -121,7 +122,8 @@ class StudyPlannerApp:
 
 
     def _refresh_tasks(self) -> None:
-
+        self.listbox.delete(0, tk.END)
+        self.visible_indexes.clear()
 
         for visible_position, (task_index, task) in enumerate(self.service.get_tasks(self.filter_var.get())):
             self.visible_indexes.append(task_index)
@@ -131,7 +133,6 @@ class StudyPlannerApp:
 
         total_count, done_count = self.service.statistics()
         self.stats_var.set(f"Всего задач: {total_count} | Выполнено: {done_count}")
-
 
 
     def _paint_task(self, visible_position: int, priority: str, done: bool) -> None:
@@ -148,5 +149,14 @@ class StudyPlannerApp:
         self.listbox.itemconfig(visible_position, foreground=colors.get(priority, "#000000"))
 
 
+    def _reset_tasks(self) -> None:
+        if not self.service.tasks:
+            return 
+
+        confirmed = messagebox.askyesno("Подтверждение", "Удалить все задачи?")
+        if not confirmed:
+            return 
+
+        self.service.reset_tasks()
 
 
