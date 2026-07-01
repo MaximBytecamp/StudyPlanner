@@ -25,3 +25,4 @@ class TaskService:
 
     def save(self) -> None: 
         self.repository.save(self.tasks)
+        

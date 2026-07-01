@@ -2,7 +2,7 @@ import tkinter as tk
 from .storage import JsonTaskRepository
 from .config import FILTERS, PRIORITIES, TASKS_FILE
 from tkinter import messagebox, ttk
-
+from .services import TaskService
 
 class StudyPlannerApp:
     def __init__(self) -> None:
@@ -12,6 +12,7 @@ class StudyPlannerApp:
         self.root.minsize(640, 440)
 
         repository = JsonTaskRepository(TASKS_FILE)
+        self.service = TaskService(repository)
 
         self.title_var= tk.StringVar()
         self.deadline_var = tk.StringVar()
@@ -52,7 +53,7 @@ class StudyPlannerApp:
 
         buttons = ttk.Frame(form)
         buttons.grid(row=3, column=1, pady=(8,0), sticky="w")
-        ttk.Button(buttons, text="Добавить задачу", command=...).grid(row=0, column=0, padx=(0,8))
+        ttk.Button(buttons, text="Добавить задачу", command=self._add_task).grid(row=0, column=0, padx=(0,8))
         ttk.Button(buttons, text="Очистить", command=self._clear_form).grid(row=0, column=1)
 
         content = ttk.LabelFrame(self.root, text="Список задач", padding=12)
@@ -98,5 +99,15 @@ class StudyPlannerApp:
         self.priority_var.set(PRIORITIES[1])
 
     def _add_task(self) -> None:
-        ...
+        try:
+            self.service.add_task(
+                self.title_var.get(),
+                self.deadline_var.get(), 
+                self.priority_var.get()
+            )
+        except ValueError as error:
+            messagebox.showerror("Ошибка", str(error))
+            return 
+
+        self._clear_form()
 

@@ -11,7 +11,7 @@ class JsonTaskRepository:
 
 
     def load(self) -> list[Task]:
-        if not self.file_path.exisits():
+        if not self.file_path.exists():
             return []
 
 
