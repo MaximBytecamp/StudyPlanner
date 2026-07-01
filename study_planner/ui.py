@@ -129,6 +129,10 @@ class StudyPlannerApp:
             self._paint_task(visible_position, task.priority, task.done)
 
 
+        total_count, done_count = self.service.statistics()
+        self.stats_var.set(f"Всего задач: {total_count} | Выполнено: {done_count}")
+
+
 
     def _paint_task(self, visible_position: int, priority: str, done: bool) -> None:
         if done:
