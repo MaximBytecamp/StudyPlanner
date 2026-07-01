@@ -90,7 +90,7 @@ class StudyPlannerApp:
         ttk.Button(actions, text="Выполнено", command=...).grid(row=0, column=0, padx=(0,8))
         ttk.Button(actions, text="Удалить", command=...).grid(row=0, column=1, padx=(0,8))
         ttk.Button(actions, text="Сохранить", command=self._save_tasks).grid(row=0, column=2, padx=(0,8))
-        ttk.Button(actions, text="Сбросить все", command=...).grid(row=0, column=3, padx=(0,8))
+        ttk.Button(actions, text="Сбросить все", command=self._reset_tasks).grid(row=0, column=3, padx=(0,8))
 
         footer = ttk.Frame(self.root, padding=(12,6,12,12))
         footer.grid(row=3, column=0, sticky="ew")
@@ -158,5 +158,6 @@ class StudyPlannerApp:
             return 
 
         self.service.reset_tasks()
+        self._refresh_tasks()
 
 
