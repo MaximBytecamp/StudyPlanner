@@ -87,8 +87,8 @@ class StudyPlannerApp:
         actions = ttk.Frame(self.root, padding=(12,6))
         actions.grid(row=2, column=0, sticky="ew")
 
-        ttk.Button(actions, text="Выполнено", command=...).grid(row=0, column=0, padx=(0,8))
-        ttk.Button(actions, text="Удалить", command=...).grid(row=0, column=1, padx=(0,8))
+        ttk.Button(actions, text="Выполнено", command=self._toggle_done).grid(row=0, column=0, padx=(0,8))
+        ttk.Button(actions, text="Удалить", command=self._delete_task).grid(row=0, column=1, padx=(0,8))
         ttk.Button(actions, text="Сохранить", command=self._save_tasks).grid(row=0, column=2, padx=(0,8))
         ttk.Button(actions, text="Сбросить все", command=self._reset_tasks).grid(row=0, column=3, padx=(0,8))
 
@@ -158,6 +158,35 @@ class StudyPlannerApp:
             return 
 
         self.service.reset_tasks()
+        self._refresh_tasks()
+
+    def _get_selected_task_index(self) -> int | None:
+        selected = self.listbox.curselection() #(0, )
+
+        if not selected:
+            messagebox.showwarning("Выбор задачи", "Выберите задачу из списка")
+
+        visible_index = selected[0]
+        return self.visible_indexes[visible_index]
+
+
+    def _delete_task(self) -> None:
+        task_index = self._get_selected_task_index()
+
+        if task_index is None:
+            return 
+
+        self.service.delete_task(task_index)
+        self._refresh_tasks()
+
+
+    def _toggle_done(self) -> None:
+        task_index = self._get_selected_task_index()
+
+        if task_index is None:
+            return 
+
+        self.service.toggle_done(task_index)
         self._refresh_tasks()
 
 

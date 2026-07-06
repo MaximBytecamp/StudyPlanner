@@ -45,3 +45,12 @@ class TaskService:
     def reset_tasks(self) -> None:
         self.tasks.clear()
         self.save()
+
+    def delete_task(self, index: int) -> None:
+        del self.tasks[index]
+        self.save()
+
+
+    def toggle_done(self, index: int) -> None:
+        self.tasks[index].done = not self.tasks[index].done #
+        self.save()
